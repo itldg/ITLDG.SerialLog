@@ -1,0 +1,22 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+	<PropertyGroup>
+		<TargetFrameworks>net6.0-windows;net4.8</TargetFrameworks>
+		<Nullable>enable</Nullable>
+		<UseWindowsForms>true</UseWindowsForms>
+		<ImplicitUsings>disable</ImplicitUsings>
+		<LangVersion>preview</LangVersion>
+		<GeneratePackageOnBuild>True</GeneratePackageOnBuild>
+		<Title>串口日志控件</Title>
+		<RunPostBuildEvent>Always</RunPostBuildEvent>
+		<AssemblyName>ITLDG.SerialLog</AssemblyName>
+		<Authors>ITLDG</Authors>
+		<VersionPrefix>1.0.4</VersionPrefix>
+		<Description>串口日志展示控件,不同颜色区分,支持HEX和TEXT</Description>
+		<RepositoryType>git</RepositoryType>
+		<RepositoryUrl>https://gitee.com/itldg/ITLDG.SerialLog</RepositoryUrl>
+		<PackageTags>SerialLog</PackageTags>
+	</PropertyGroup>
+	<Target Name="PostBuild" AfterTargets="PostBuildEvent">
+	  <Exec Command="xcopy /y $(ProjectDir)bin\Debug\*.nupkg F:\Data\Code\Net\Nuget" />
+	</Target>
+</Project>
