@@ -10,13 +10,28 @@
 		<RunPostBuildEvent>Always</RunPostBuildEvent>
 		<AssemblyName>ITLDG.SerialLog</AssemblyName>
 		<Authors>ITLDG</Authors>
-		<VersionPrefix>1.0.4</VersionPrefix>
+		<VersionPrefix>1.0.6</VersionPrefix>
 		<Description>串口日志展示控件,不同颜色区分,支持HEX和TEXT</Description>
 		<RepositoryType>git</RepositoryType>
 		<RepositoryUrl>https://gitee.com/itldg/ITLDG.SerialLog</RepositoryUrl>
 		<PackageTags>SerialLog</PackageTags>
+		<ApplicationIcon>Index.ico</ApplicationIcon>
+		<PackageProjectUrl>https://gitee.com/itldg/ITLDG.SerialLog</PackageProjectUrl>
 	</PropertyGroup>
 	<Target Name="PostBuild" AfterTargets="PostBuildEvent">
 	  <Exec Command="xcopy /y $(ProjectDir)bin\Debug\*.nupkg F:\Data\Code\Net\Nuget" />
 	</Target>
+	<ItemGroup>
+	  <Content Include="Index.ico" />
+	</ItemGroup>
+	<ItemGroup>
+	  <None Update="logo.png">
+	    <Pack>True</Pack>
+	    <PackagePath>\</PackagePath>
+	  </None>
+	  <None Update="README.md">
+	    <Pack>True</Pack>
+	    <PackagePath>\</PackagePath>
+	  </None>
+	</ItemGroup>
 </Project>

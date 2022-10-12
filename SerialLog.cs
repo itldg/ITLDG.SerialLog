@@ -143,7 +143,8 @@ namespace ITLDG.SerialLog
         public void AddLog(string comName, Color color, string hexLog)
         {
             if (!_LogEnable) return;
-            _AddLog(comName + " " + DateTime.Now.ToString("HH:mm:ss"), color, _SerialLogChineseFontFamily);
+            _AddLog("\r\n"+comName + " " + DateTime.Now.ToString("HH:mm:ss"), color, _SerialLogChineseFontFamily);
+            if (hexLog.Length == 0) return;
             StringBuilder sb = new StringBuilder();
             if (_SerialLogType == LogType.HEX_And_TEXT || _SerialLogType == LogType.HEX)
             {
