@@ -9,7 +9,7 @@ using System.Windows.Forms;
 
 namespace ITLDG.SerialLog
 {
-    public partial class SerialLog: UserControl
+    public partial class SerialLog : UserControl
     {
         private bool _LogEnable = true;
         [Description("启用记录")]
@@ -22,13 +22,14 @@ namespace ITLDG.SerialLog
                 chkEnable.Checked = value;
             }
         }
-        
-        private bool _LogAutoScroll=true;
+
+        private bool _LogAutoScroll = true;
         [Description("是否自动滚动")]
         public bool LogAutoScroll
         {
             get { return _LogAutoScroll; }
-            set { 
+            set
+            {
                 _LogAutoScroll = value;
                 chkAutoScroll.Checked = value;
             }
@@ -42,11 +43,11 @@ namespace ITLDG.SerialLog
             set
             {
                 _SerialLogType = value;
-               cmbLogType.SelectedIndex = (int)value;
+                cmbLogType.SelectedIndex = (int)value;
             }
         }
 
-        private string _SerialLogChineseFontFamily= "Microsoft YaHei";
+        private string _SerialLogChineseFontFamily = "Microsoft YaHei";
         [Description("串口日志中文字体")]
         public string SerialLogChineseFontFamily
         {
@@ -70,8 +71,10 @@ namespace ITLDG.SerialLog
         /// <summary>
         /// 日志展示控件
         /// </summary>
-        public RichTextBox richTextBox {
-            get {
+        public RichTextBox richTextBox
+        {
+            get
+            {
                 return this.rtbLog;
             }
         }
@@ -80,7 +83,7 @@ namespace ITLDG.SerialLog
             InitializeComponent();
             cmbLogType.SelectedIndex = 0;
             rtbLog.LanguageOption = RichTextBoxLanguageOptions.UIFonts;
-            
+
             //Framework按钮偏小
             if (!string.IsNullOrEmpty(RuntimeInformation.FrameworkDescription))
             {
@@ -89,7 +92,7 @@ namespace ITLDG.SerialLog
                 btnCopyLog.Height += 3;
             }
         }
-       
+
 
         private void btnCopy_Click(object sender, EventArgs e)
         {
@@ -132,8 +135,13 @@ namespace ITLDG.SerialLog
             if (!_LogEnable) return;
             try
             {
-                string hexLog = ByteToHex(ByteLog);
-                AddLog(comName, color, hexLog);
+
+                string hexLog = "";
+                if (_SerialLogType == LogType.HEX_And_TEXT || _SerialLogType == LogType.HEX)
+                {
+                    hexLog=ByteToHex(ByteLog);
+                } 
+                AddLog(comName, color, ByteLog, hexLog);
             }
             catch (Exception ex)
             {
@@ -143,8 +151,25 @@ namespace ITLDG.SerialLog
         public void AddLog(string comName, Color color, string hexLog)
         {
             if (!_LogEnable) return;
-            _AddLog("\r\n"+comName + " " + DateTime.Now.ToString("HH:mm:ss"), color, _SerialLogChineseFontFamily);
-            if (hexLog.Length == 0) return;
+            try
+            {
+                byte[] bytes = null;
+                if (_SerialLogType == LogType.HEX_And_TEXT || _SerialLogType == LogType.TEXT)
+                {
+                    bytes = HexToByte(hexLog);
+                }
+                AddLog(comName, color, bytes, hexLog);
+            }
+            catch (Exception ex)
+            {
+
+            }
+        }
+        public void AddLog(string comName, Color color, byte[] bytes, string hexLog)
+        {
+            if (!_LogEnable) return;
+            _AddLog("\r\n" + comName + " " + DateTime.Now.ToString("HH:mm:ss"), color, _SerialLogChineseFontFamily);
+            if (hexLog.Length == 0&& bytes==null) return;
             StringBuilder sb = new StringBuilder();
             if (_SerialLogType == LogType.HEX_And_TEXT || _SerialLogType == LogType.HEX)
             {
@@ -171,16 +196,16 @@ namespace ITLDG.SerialLog
             {
                 try
                 {
-                    sb.AppendLine("TXT：" + HexToAscii(hexLog));
+                    sb.AppendLine("TXT：" + Encoding.Default.GetString(bytes));
                 }
                 catch (global::System.Exception)
                 {
                 }
-                
+
             }
-            _AddLog(sb.ToString(),color, _SerialLogEnglishFontFamily);
+            _AddLog(sb.ToString(), color, _SerialLogEnglishFontFamily);
         }
-        void _AddLog(string content,Color color, string font)
+        void _AddLog(string content, Color color, string font)
         {
             this.Invoke((MethodInvoker)delegate ()
             {
