@@ -1,6 +1,5 @@
 ﻿using System;
 using System.ComponentModel;
-using System.Diagnostics;
 using System.Drawing;
 using System.Runtime.InteropServices;
 using System.Text;
@@ -143,7 +142,7 @@ namespace ITLDG.SerialLog
                 } 
                 AddLog(comName, color, ByteLog, hexLog);
             }
-            catch (Exception ex)
+            catch (Exception)
             {
 
             }
@@ -153,14 +152,14 @@ namespace ITLDG.SerialLog
             if (!_LogEnable) return;
             try
             {
-                byte[] bytes = null;
+                byte[] bytes = [];
                 if (_SerialLogType == LogType.HEX_And_TEXT || _SerialLogType == LogType.TEXT)
                 {
                     bytes = HexToByte(hexLog);
                 }
                 AddLog(comName, color, bytes, hexLog);
             }
-            catch (Exception ex)
+            catch (Exception)
             {
 
             }
@@ -196,7 +195,9 @@ namespace ITLDG.SerialLog
             {
                 try
                 {
-                    sb.AppendLine("TXT：" + Encoding.Default.GetString(bytes));
+                    string temp = Encoding.Default.GetString(bytes);
+                    temp = temp.Replace("\0", ""); //\0会导致后面的字符不显示
+                    sb.AppendLine("TXT：" + temp);
                 }
                 catch (global::System.Exception)
                 {
