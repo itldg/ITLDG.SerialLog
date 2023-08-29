@@ -12,12 +12,13 @@
 		<AssemblyName>ITLDG.SerialLog</AssemblyName>
 		<PackageReadmeFile>README.md</PackageReadmeFile>
 		<Authors>ITLDG</Authors>
-		<VersionPrefix>1.0.8</VersionPrefix>
+		<VersionPrefix>1.0.9</VersionPrefix>
 		<Description>串口日志展示控件,不同颜色区分,支持HEX和TEXT</Description>
 		<RepositoryType>git</RepositoryType>
 		<RepositoryUrl>https://github.com/itldg/ITLDG.SerialLog</RepositoryUrl>
 		<PackageTags>SerialLog</PackageTags>
-		<PackageProjectUrl>https://github.com/itldg/ITLDG.SerialLog</PackageProjectUrl>
+		<PackageProjectUrl>https://www.itldg.com</PackageProjectUrl>
+		<PackageLicenseExpression>MIT</PackageLicenseExpression>
 	</PropertyGroup>
 	<ItemGroup>
 		<None Include="README.md" Pack="true" PackagePath="\"/>

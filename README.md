@@ -6,7 +6,7 @@
 
 ### 界面预览
 
-![界面预览](https://github.com/itldg/ITLDG.SerialLog/raw/master/docs/main.png)
+![界面预览](https://raw.githubusercontent.com/itldg/ITLDG.SerialLog/master/docs/main.png)
 
 ### 参数说明
 
