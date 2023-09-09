@@ -138,8 +138,8 @@ namespace ITLDG.SerialLog
                 string hexLog = "";
                 if (_SerialLogType == LogType.HEX_And_TEXT || _SerialLogType == LogType.HEX)
                 {
-                    hexLog=ByteToHex(ByteLog);
-                } 
+                    hexLog = ByteToHex(ByteLog);
+                }
                 AddLog(comName, color, ByteLog, hexLog);
             }
             catch (Exception)
@@ -164,47 +164,53 @@ namespace ITLDG.SerialLog
 
             }
         }
+        object lockobj = new object();
         public void AddLog(string comName, Color color, byte[] bytes, string hexLog)
         {
             if (!_LogEnable) return;
-            _AddLog("\r\n" + comName + " " + DateTime.Now.ToString("HH:mm:ss.fff"), color, _SerialLogChineseFontFamily);
-            if (hexLog.Length == 0&& bytes==null) return;
-            StringBuilder sb = new StringBuilder();
-            if (_SerialLogType == LogType.HEX_And_TEXT || _SerialLogType == LogType.HEX)
+            //线程锁
+            lock (lockobj)
             {
-                sb.Append("HEX：");
-                string hex = hexLog.Replace(" ", "");
-                if (hex.Length % 2 == 0)
+                _AddLog("\r\n" + comName + " " + DateTime.Now.ToString("HH:mm:ss.fff"), color, _SerialLogChineseFontFamily);
+                if (hexLog.Length == 0 && bytes == null) return;
+                StringBuilder sb = new StringBuilder();
+                if (_SerialLogType == LogType.HEX_And_TEXT || _SerialLogType == LogType.HEX)
                 {
-                    for (int i = 0; i < hex.Length; i += 2)
+                    sb.Append("HEX：");
+                    string hex = hexLog.Replace(" ", "");
+                    if (hex.Length % 2 == 0)
                     {
-                        if (i != 0)
+                        for (int i = 0; i < hex.Length; i += 2)
                         {
-                            sb.Append(" ");
+                            if (i != 0)
+                            {
+                                sb.Append(" ");
+                            }
+                            sb.Append(hex.Substring(i, 2));
                         }
-                        sb.Append(hex.Substring(i, 2));
                     }
+                    else
+                    {
+                        sb.Append(hexLog);
+                    }
+                    sb.AppendLine();
                 }
-                else
+                if (_SerialLogType == LogType.HEX_And_TEXT || _SerialLogType == LogType.TEXT)
                 {
-                    sb.Append(hexLog);
-                }
-                sb.AppendLine();
-            }
-            if (_SerialLogType == LogType.HEX_And_TEXT || _SerialLogType == LogType.TEXT)
-            {
-                try
-                {
-                    string temp = Encoding.Default.GetString(bytes);
-                    temp = temp.Replace("\0", ""); //\0会导致后面的字符不显示
-                    sb.AppendLine("TXT：" + temp);
-                }
-                catch (global::System.Exception)
-                {
-                }
+                    try
+                    {
+                        string temp = Encoding.Default.GetString(bytes);
+                        temp = temp.Replace("\0", ""); //\0会导致后面的字符不显示
+                        sb.AppendLine("TXT：" + temp);
+                    }
+                    catch (global::System.Exception)
+                    {
+                    }
 
+                }
+                _AddLog(sb.ToString(), color, _SerialLogEnglishFontFamily);
             }
-            _AddLog(sb.ToString(), color, _SerialLogEnglishFontFamily);
+
         }
         void _AddLog(string content, Color color, string font)
         {
