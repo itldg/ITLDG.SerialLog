@@ -1,4 +1,4 @@
-﻿namespace ITLDG.SerialLog
+﻿namespace ITLDG
 {
     /// <summary>
     /// 日志类型

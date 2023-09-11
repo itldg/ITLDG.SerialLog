@@ -1,6 +1,6 @@
 ﻿using System.Windows.Forms;
 
-namespace ITLDG.SerialLog
+namespace ITLDG
 {
     partial class SerialLog
     {

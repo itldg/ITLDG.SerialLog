@@ -12,17 +12,18 @@
 		<AssemblyName>ITLDG.SerialLog</AssemblyName>
 		<PackageReadmeFile>README.md</PackageReadmeFile>
 		<Authors>ITLDG</Authors>
-		<VersionPrefix>1.0.10</VersionPrefix>
+		<VersionPrefix>1.1.0</VersionPrefix>
 		<Description>串口日志展示控件,不同颜色区分,支持HEX和TEXT</Description>
 		<RepositoryType>git</RepositoryType>
 		<RepositoryUrl>https://github.com/itldg/ITLDG.SerialLog</RepositoryUrl>
 		<PackageTags>SerialLog</PackageTags>
 		<PackageProjectUrl>https://www.itldg.com</PackageProjectUrl>
 		<PackageLicenseExpression>MIT</PackageLicenseExpression>
+		<RootNamespace>ITLDG</RootNamespace>
 	</PropertyGroup>
 	<ItemGroup>
-		<None Include="README.md" Pack="true" PackagePath="\"/>
-		<None Include="logo.png" Pack="true" PackagePath="\"/>
+		<None Include="README.md" Pack="true" PackagePath="\" />
+		<None Include="logo.png" Pack="true" PackagePath="\" />
 	</ItemGroup>
 	<Target Name="CopyPackage" AfterTargets="Pack">
 		<Copy SourceFiles="$(OutputPath)\$(PackageId).$(PackageVersion).nupkg" DestinationFolder="D:\Data\Code\Net\Nuget" />
